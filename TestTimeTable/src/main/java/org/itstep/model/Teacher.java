@@ -22,10 +22,13 @@ public class Teacher {
 	@JsonProperty
 	private String login;
 	
+	
 	@Column(name = "PASSWORD")
+	@JsonProperty
 	private String password;
 
 	@Column(name = "FIRST_NAME")
+	@JsonProperty
 	private String firstName;
 	
 	@Column(name = "SECONDNAME")
