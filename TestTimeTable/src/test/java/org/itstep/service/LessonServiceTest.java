@@ -8,11 +8,11 @@ import java.util.List;
 import org.itstep.ApplicationRunner;
 import org.itstep.dao.LessonDAO;
 import org.itstep.model.Lesson;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebAutoConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -26,7 +26,7 @@ public class LessonServiceTest {
 	
 	@MockBean
 	LessonDAO lessonDao;
-	 
+	@Ignore 
 	@Test
 	public void testFindAllByStartTimeLongLong() {
 		
