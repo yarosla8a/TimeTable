@@ -30,5 +30,7 @@ public class Group {
 	@Column( name = "SPECIALIZATION")
 	@JsonProperty
 	private String specialization;
+
+	
 	
 }

@@ -63,7 +63,7 @@ public class LessonDAO {
 		session.close();
 	}
 	
-	public List<Lesson> findAllByStartTime(Long startPeriod, Long endPeriod) {
+	public List<Lesson> findAllByStartTime(Long startPeriod, Long endPeriod) { // Long
 
 		Session session = hiber.getSessionFactory().openSession();
 
@@ -83,4 +83,6 @@ public class LessonDAO {
 
 		return lessons;
 	}
+
+	
 }

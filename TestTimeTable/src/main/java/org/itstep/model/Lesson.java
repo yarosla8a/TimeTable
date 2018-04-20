@@ -44,4 +44,8 @@ public class Lesson {
 	@JsonProperty
 	private Long startTime;
 	
+	@Column( name = "END_TIME")
+	@JsonProperty
+	private Long endTime;
+	
 }
