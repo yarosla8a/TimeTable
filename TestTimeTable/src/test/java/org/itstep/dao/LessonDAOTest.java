@@ -2,6 +2,7 @@ package org.itstep.dao;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.itstep.ApplicationRunner;
@@ -24,16 +25,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 
 public class LessonDAOTest {
+
 	Subject subjectInDB;
 
-	Teacher teacherInDB1;
-	Teacher teacherInDB2;
+	Teacher teacherInDB;
 
-	Group groupInDB1;
-	Group groupInDB2;
+	Group groupInDB;
 
-	Lesson lessonInDB;
-	Lesson lessonInDB2;
+	List<Lesson> lessons = new ArrayList<Lesson>();
 
 	@Autowired
 	LessonDAO lessonDAO;
@@ -51,95 +50,64 @@ public class LessonDAOTest {
 	public void setToDB() {
 		Subject subject = new Subject();
 		subject.setName("Java");
-
 		subjectInDB = subjectDAO.save(subject);
 
 		Teacher teacher = new Teacher();
-		Teacher teacher2 = new Teacher();
-		
 		teacher.setFirstName("Alex");
 		teacher.setSecondName("Ignatenko");
 		teacher.setLogin("Ignatenko2207");
 		teacher.setPassword("123456");
 		teacher.setSubject(subjectInDB);
+		teacherInDB = teacherDAO.save(teacher);
 
-		teacher2.setFirstName("Nina");
-		teacher2.setSecondName("Petrivna");
-		teacher2.setLogin("Petrivna1234");
-		teacher2.setPassword("09876");
-		teacher2.setSubject(subjectInDB);
+		Group testGroup = new Group();
+		testGroup.setName("ST21");
+		testGroup.setCourse("1");
+		testGroup.setSpecialization("JavaQA");
+		groupInDB = groupDAO.save(testGroup);
 
-		teacherInDB1 = teacherDAO.save(teacher);
-		teacherInDB2 = teacherDAO.save(teacher2);
+		for (int i = 1; i <= 3; i++) {
 
-		Group testGroup1 = new Group();
-		Group testGroup2 = new Group();
+			Lesson less = new Lesson();
+			less.setSubject(subjectInDB);
+			less.setTeacher(teacherInDB);
+			less.setCabinet("111");
+			less.setGroup(groupInDB);
+			less.setStartTime((long) 45 * i);
 
-		testGroup1.setName("ST21");
-		testGroup1.setCourse("1");
-		testGroup1.setSpecialization("JavaQA");
-
-		testGroup2.setName("J3-17");
-		testGroup2.setCourse("1");
-		testGroup2.setSpecialization("Java Development");
-
-		groupInDB1 = groupDAO.save(testGroup1);
-		groupInDB2 = groupDAO.save(testGroup2);
-
-		Lesson less1 = new Lesson();
-		Lesson less2 = new Lesson();
-		
-		less1.setSubject(subjectInDB);
-		less1.setTeacher(teacherInDB1);
-		less1.setCabinet("111");
-		less1.setGroup(groupInDB1);
-		less1.setStartTime(12345L);
-		less1.setEndTime(87645L);
-
-		less2.setSubject(subjectInDB);
-		less2.setTeacher(teacherInDB2);
-		less2.setCabinet("222");
-		less2.setGroup(groupInDB2);
-		less2.setStartTime(12345L);
-		less2.setEndTime(87645L);
-
-		lessonInDB = lessonDAO.save(less1);
-		lessonInDB2 = lessonDAO.save(less2);
-
-		//  add endTime in LessonDAO
+			lessons.add(lessonDAO.save(less));
+		}
 
 	}
 
 	@Test
 	public void testFindAllByStartTime() {
-		List<Lesson> lessons = lessonDAO.findAllByStartTime(12345L, 87645L);
-		
+		List<Lesson> lessons = lessonDAO.findAllByStartTime(0L, 100L);
+
 		assertNotNull(lessons);
-		
+
 		assertEquals(2, lessons.size());
-		
-		
+
 		assertEquals(lessons.get(0).getGroup().getName(), "ST21");
-		assertNotEquals(lessons.get(0).getGroup().getName(), lessons.get(1).getGroup().getName());
-		
+		assertEquals(lessons.get(0).getGroup().getName(), lessons.get(1).getGroup().getName());
+
 		assertEquals(lessons.get(0).getTeacher().getLogin(), "Ignatenko2207");
-		assertNotEquals(lessons.get(0).getTeacher().getLogin(), lessons.get(1).getTeacher().getLogin());
-		
-		assertEquals(lessons.get(0).getCabinet(), "111");
-		assertNotEquals(lessons.get(0).getCabinet(), lessons.get(1).getCabinet());
+		assertEquals(lessons.get(0).getTeacher().getLogin(), lessons.get(1).getTeacher().getLogin());
+
+		List<Lesson> allLessons = lessonDAO.findAllByStartTime(0L, 150L);
+
+		assertEquals(3, allLessons.size());
 
 	}
 
 	@After
 	public void cleanDB() {
-		lessonDAO.delete(lessonInDB);
-		lessonDAO.delete(lessonInDB2);
-		groupDAO.delete(groupInDB1);
-		groupDAO.delete(groupInDB2);
-		teacherDAO.delete(teacherInDB1);
-		teacherDAO.delete(teacherInDB2);
+		for (Lesson lesson : lessons) {
+			lessonDAO.delete(lesson);
+		}
+		groupDAO.delete(groupInDB);
+		teacherDAO.delete(teacherInDB);
 		subjectDAO.delete(subjectInDB);
-		
 
 	}
 

@@ -34,7 +34,8 @@ public class LessonController {
 		return new ResponseEntity<Lesson>(HttpStatus.BAD_REQUEST);
 	}
 
-	@PutMapping(consumes = { MediaType.APPLICATION_JSON_UTF8_VALUE })
+	@PutMapping(consumes = { MediaType.APPLICATION_JSON_UTF8_VALUE },  produces = {
+			MediaType.APPLICATION_JSON_UTF8_VALUE })
 	ResponseEntity update(@RequestBody Lesson lesson) {
 		Lesson lessonInDB = lessonService.update(lesson);
 		if (lessonInDB != null) {
@@ -43,7 +44,7 @@ public class LessonController {
 		return new ResponseEntity(HttpStatus.BAD_REQUEST);
 	}
 
-	@GetMapping(path = "/get-one", consumes = { MediaType.APPLICATION_JSON_UTF8_VALUE }, produces = {
+	@GetMapping(path = "/get-one", consumes= {MediaType.ALL_VALUE}, produces = {
 			MediaType.APPLICATION_JSON_UTF8_VALUE })
 	ResponseEntity<Lesson> getOne(@RequestHeader Integer id) {
 		Lesson lesson = lessonService.get(id);
@@ -53,7 +54,7 @@ public class LessonController {
 		return new ResponseEntity<Lesson>(HttpStatus.BAD_REQUEST);
 	}
 
-	@GetMapping(path = "/get-by-period", produces = { MediaType.APPLICATION_JSON_UTF8_VALUE })
+	@GetMapping(path = "/get-by-period", consumes= {MediaType.ALL_VALUE}, produces = { MediaType.APPLICATION_JSON_UTF8_VALUE })
 	ResponseEntity<List<Lesson>> findAllByPeriod(@RequestHeader Long start, @RequestHeader Long end) {
 		List<Lesson> lessons = lessonService.findAllByStartTime(start, end);
 		if (lessons != null) {

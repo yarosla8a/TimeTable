@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
@@ -78,17 +79,22 @@ public class SubjectControllerTest {
 
 	}
 
-	@Ignore
+	
 	@Test
 	public void testGetOne() {
 		Subject subject = new Subject();
 		subject.setName("Java");
 
 		Mockito.when(subjectService.get(Mockito.anyString())).thenReturn(subject);
+		
+		HttpHeaders headers =  new HttpHeaders();
+		headers.add("name", "Java");
+		
+		
 		RequestEntity<Subject> request = null;
 
 		try {
-			request = new RequestEntity<Subject>(subject, HttpMethod.GET, new URI("/subject"));
+			request = new RequestEntity<Subject>(headers, HttpMethod.GET, new URI("/subject"));
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
@@ -98,22 +104,21 @@ public class SubjectControllerTest {
 		Mockito.verify(subjectService, Mockito.times(1)).get(Mockito.anyString());
 
 	}
-
 	@Test
 	public void testDelete() {
-		Subject subject = new Subject();
-		subject.setName("Java");
 
+		Mockito.doNothing().when(subjectService).delete(Mockito.any(Subject.class));
+		
 		RequestEntity<Subject> request = null;
 		try {
-			request = new RequestEntity<Subject>(subject, HttpMethod.DELETE, new URI("/subject"));
+			request = new RequestEntity<Subject>(new Subject(), HttpMethod.DELETE, new URI("/subject"));
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 
 		ResponseEntity<Subject> response = restTemplate.exchange(request, Subject.class);
 
-		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+		assertEquals(HttpStatus.OK, response.getStatusCode());
 		Mockito.verify(subjectService, Mockito.times(1)).delete((Mockito.any(Subject.class)));
 
 	}

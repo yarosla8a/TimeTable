@@ -35,7 +35,8 @@ public class GroupController {
 		return new ResponseEntity<Group>(HttpStatus.BAD_REQUEST);
 	}
 
-	@PutMapping(consumes = { MediaType.APPLICATION_JSON_UTF8_VALUE })
+	@PutMapping(consumes = { MediaType.APPLICATION_JSON_UTF8_VALUE },  produces = {
+			MediaType.APPLICATION_JSON_UTF8_VALUE })
 	ResponseEntity update(@RequestBody Group group) {
 		Group groupInDB = groupService.update(group);
 		if (groupInDB != null) {
@@ -44,7 +45,7 @@ public class GroupController {
 		return new ResponseEntity(HttpStatus.BAD_REQUEST);
 	}
 
-	@GetMapping(path = "/get-one", produces = { MediaType.APPLICATION_JSON_UTF8_VALUE })
+	@GetMapping(path = "/get-one", consumes= {MediaType.ALL_VALUE}, produces = { MediaType.APPLICATION_JSON_UTF8_VALUE })
 	ResponseEntity<Group> getOne(@RequestHeader String name) {
 		Group savedGroup = groupService.get(name);
 		if (savedGroup != null) {
@@ -53,7 +54,7 @@ public class GroupController {
 		return new ResponseEntity(HttpStatus.BAD_REQUEST);
 	}
 
-	@GetMapping(path = "/get-by-course", produces = { MediaType.APPLICATION_JSON_UTF8_VALUE })
+	@GetMapping(path = "/get-by-course", consumes= {MediaType.ALL_VALUE}, produces = { MediaType.APPLICATION_JSON_UTF8_VALUE })
 	ResponseEntity<List<Group>> findAllByCourse(@RequestHeader String course) {
 		List<Group> groups = groupService.findAllByCourse(course);
 		if (groups != null) {

@@ -34,7 +34,8 @@ public class TeacherController {
 		return new ResponseEntity<Teacher>(HttpStatus.BAD_REQUEST);
 	}
 
-	@PutMapping(consumes = { MediaType.APPLICATION_JSON_UTF8_VALUE })
+	@PutMapping(consumes = { MediaType.APPLICATION_JSON_UTF8_VALUE },  produces = {
+			MediaType.APPLICATION_JSON_UTF8_VALUE })
 	ResponseEntity update(@RequestBody Teacher teacher) {
 		Teacher teacherInDB = teacherService.update(teacher);
 		if (teacherInDB != null) {
@@ -43,7 +44,7 @@ public class TeacherController {
 		return new ResponseEntity(HttpStatus.BAD_REQUEST);
 	}
 
-	@GetMapping(path = "/get-one",  produces = {
+	@GetMapping(path = "/get-one", consumes= {MediaType.ALL_VALUE}, produces = {
 			MediaType.APPLICATION_JSON_UTF8_VALUE })
 	ResponseEntity<Teacher> getOne(@RequestHeader String login) {
 		Teacher teacher = teacherService.get(login);
@@ -53,7 +54,7 @@ public class TeacherController {
 		return new ResponseEntity<Teacher>(HttpStatus.BAD_REQUEST);
 	}
 
-	@GetMapping(path = "/get-by-subject", consumes = { MediaType.APPLICATION_JSON_UTF8_VALUE }, produces = {
+	@GetMapping(path = "/get-by-subject", consumes= {MediaType.ALL_VALUE}, produces = {
 			MediaType.APPLICATION_JSON_UTF8_VALUE })
 	ResponseEntity<List<Teacher>> findAllBySubject(@RequestHeader String name) {
 		List<Teacher> teachers = teacherService.findAllBySubject(name);

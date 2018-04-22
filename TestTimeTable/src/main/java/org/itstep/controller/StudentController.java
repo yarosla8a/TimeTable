@@ -34,7 +34,8 @@ public class StudentController {
 		return new ResponseEntity<Student>(HttpStatus.BAD_REQUEST);
 	}
 
-	@PutMapping(consumes = { MediaType.APPLICATION_JSON_UTF8_VALUE })
+	@PutMapping(consumes = { MediaType.APPLICATION_JSON_UTF8_VALUE },  produces = {
+			MediaType.APPLICATION_JSON_UTF8_VALUE })
 	ResponseEntity update(@RequestBody Student student) {
 		Student studentInDB = studentService.update(student);
 		if (studentInDB != null) {
@@ -43,7 +44,7 @@ public class StudentController {
 		return new ResponseEntity(HttpStatus.BAD_REQUEST);
 	}
 
-	@GetMapping(path = "/get-one", consumes = { MediaType.APPLICATION_JSON_UTF8_VALUE }, produces = {
+	@GetMapping(path = "/get-one", consumes= {MediaType.ALL_VALUE}, produces = {
 			MediaType.APPLICATION_JSON_UTF8_VALUE })
 	ResponseEntity<Student> getOne(@RequestHeader String login) {
 		Student student = studentService.get(login);
@@ -53,7 +54,7 @@ public class StudentController {
 		return new ResponseEntity<Student>(HttpStatus.BAD_REQUEST);
 	}
 
-	@GetMapping(path = "/get-by-group",  produces = {
+	@GetMapping(path = "/get-by-group",consumes= {MediaType.ALL_VALUE},  produces = {
 			MediaType.APPLICATION_JSON_UTF8_VALUE })
 	ResponseEntity<List<Student>> findAllByGroup(@RequestHeader String name) {
 		List<Student> students = studentService.findAllByGroup(name);
