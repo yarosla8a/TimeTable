@@ -51,7 +51,7 @@ public class StudentController {
 		if (student != null) {
 			return new ResponseEntity<Student>(student, HttpStatus.OK);
 		}
-		return new ResponseEntity<Student>(HttpStatus.BAD_REQUEST);
+		return new ResponseEntity(HttpStatus.BAD_REQUEST);
 	}
 
 	@GetMapping(path = "/get-by-group",consumes= {MediaType.ALL_VALUE},  produces = {
@@ -61,7 +61,7 @@ public class StudentController {
 		if (students != null) {
 			return new ResponseEntity<List<Student>>(students, HttpStatus.OK);
 		}
-		return new ResponseEntity<List<Student>>(HttpStatus.BAD_REQUEST);
+		return new ResponseEntity(HttpStatus.BAD_REQUEST);
 	}
 
 	@DeleteMapping(consumes = { MediaType.APPLICATION_JSON_UTF8_VALUE })
